@@ -11,25 +11,45 @@ import ru.shvetsov.todoList.services.UserService
 
 fun Route.userRouting(userService: UserService) {
 
-    post("/add-user") {
+    post("/update-user") {
         val userRequest = call.receiveNullable<UserRequest>() ?: kotlin.run {
             call.respond(HttpStatusCode.BadRequest)
             return@post
         }
 
         try {
-            val user = UserModel(
-                id = 0,
-                email = userRequest.email,
-                password = userRequest.password
-            )
-            if (user.email.isNotBlank() && user.password.isNotBlank()) {
-                userService.addUser(user = user)
+            if (checkUserExist(userService, userRequest.id!!)) {
+                val user = UserModel(
+                    id = userRequest.id,
+                    email = userRequest.email,
+                    password = userRequest.password
+                )
+
+                userService.updateUser(user = user)
                 call.respond(HttpStatusCode.OK)
             }
+        } catch (e: Exception) {
+            call.respond(HttpStatusCode.BadRequest)
+        }
+    }
 
+    delete("delete-user") {
+        val userRequest = call.request.queryParameters["id"]?.toInt() ?: kotlin.run {
+            call.respond(HttpStatusCode.BadRequest)
+            return@delete
+        }
+
+        try {
+            if (checkUserExist(userService, userRequest)) {
+                userService.deleteUser(id = userRequest)
+                call.respond(HttpStatusCode.OK)
+            }
         } catch (e: Exception) {
             call.respond(HttpStatusCode.Conflict)
         }
     }
+}
+
+private suspend fun checkUserExist(userService: UserService, id: Int): Boolean {
+    return userService.getUserById(id = id) != null
 }

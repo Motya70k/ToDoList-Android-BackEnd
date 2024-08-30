@@ -31,7 +31,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("mysql:mysql-connector-java:$mysql_connector_version")
     implementation("com.zaxxer:HikariCP:$hikari_version")
-
+    //JWT
+    implementation("io.ktor:ktor-server-auth:$ktor_version")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 

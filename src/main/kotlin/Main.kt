@@ -15,7 +15,6 @@ fun main() {
 
 fun Application.module() {
     val userService = UserService()
-
     configureRouting(userService = userService)
     initializeDatabase()
     configureSerialization()
