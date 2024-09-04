@@ -9,9 +9,12 @@ import ru.shvetsov.todoList.models.UserModel
 import ru.shvetsov.todoList.requests.LoginRequest
 import ru.shvetsov.todoList.requests.UserRequest
 import ru.shvetsov.todoList.services.UserService
+import ru.shvetsov.todoList.utils.jwt.JwtService
+import ru.shvetsov.todoList.utils.security.PasswordEncryptor.verifyPassword
 
-fun Route.authRouting(userService: UserService) {
-
+fun Route.authRouting(
+    userService: UserService,
+) {
     post("/register") {
         val userRequest = call.receiveNullable<UserRequest>() ?: kotlin.run {
             call.respond(HttpStatusCode.BadRequest)
@@ -22,7 +25,8 @@ fun Route.authRouting(userService: UserService) {
             val user = UserModel(
                 id = 0,
                 email = userRequest.email,
-                password = userRequest.password
+                password = userRequest.password,
+                salt = ""
             )
             if (user.email.isNotBlank() && user.password.isNotBlank()) {
                 userService.addUser(user = user)
@@ -42,8 +46,12 @@ fun Route.authRouting(userService: UserService) {
 
         try {
             val user = userService.getUserByEmail(loginRequest.email)
-            if (user == null) call.respond(HttpStatusCode.NotFound)
-//            if (user.password == )
+            if (user == null) {
+                call.respond(HttpStatusCode.NotFound)
+            }
+            if (verifyPassword(loginRequest.password, user?.salt!!, user.password)) {
+                call.respond(JwtService.generateToken(user))
+            }
         } catch (e: Exception) {
             call.respond(HttpStatusCode.Conflict)
         }

@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 data class UserRequest(
     val id: Int? = null,
     val email: String,
-    val password: String
+    val password: String,
+    val salt: String
 )

@@ -7,6 +7,7 @@ import ru.shvetsov.todoList.routes.userRouting
 import ru.shvetsov.todoList.services.UserService
 
 fun Application.configureRouting(userService: UserService) {
+
     routing {
         authRouting(userService)
         userRouting(userService)

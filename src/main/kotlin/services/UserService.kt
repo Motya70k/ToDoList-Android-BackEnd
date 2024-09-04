@@ -59,7 +59,8 @@ class UserService {
         return UserModel(
             id = row[UsersTable.id],
             email = row[UsersTable.email],
-            password = row[UsersTable.password]
+            password = row[UsersTable.password],
+            salt = row[UsersTable.salt]
         )
     }
 }

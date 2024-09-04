@@ -5,6 +5,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import ru.shvetsov.todoList.plugins.DatabaseFactory.initializeDatabase
 import ru.shvetsov.todoList.plugins.configureRouting
+import ru.shvetsov.todoList.plugins.configureSecurity
 import ru.shvetsov.todoList.plugins.configureSerialization
 import ru.shvetsov.todoList.services.UserService
 
@@ -15,6 +16,7 @@ fun main() {
 
 fun Application.module() {
     val userService = UserService()
+    configureSecurity(userService)
     configureRouting(userService = userService)
     initializeDatabase()
     configureSerialization()
