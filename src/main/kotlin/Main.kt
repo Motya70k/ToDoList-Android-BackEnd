@@ -10,7 +10,7 @@ import ru.shvetsov.todoList.plugins.configureSerialization
 import ru.shvetsov.todoList.services.UserService
 
 fun main() {
-    embeddedServer(Netty, port = 8080, module = Application::module)
+    embeddedServer(Netty, port = 8080, module = Application::module, host = "192.168.1.111")
         .start(wait = true)
 }
 

@@ -14,7 +14,7 @@ class UserService {
         val hashPassword = hashPassword(user.password, generatedSalt)
         dbQuery {
             UsersTable.insert { table ->
-                table[email] = user.email
+                table[email] = user.login
                 table[password] = hashPassword
                 table[salt] = generatedSalt
             }
@@ -30,7 +30,7 @@ class UserService {
     suspend fun updateUser(user: UserModel) {
         dbQuery {
             UsersTable.update({ UsersTable.id eq user.id }) { table ->
-                table[email] = user.email
+                table[email] = user.login
                 table[password] = user.password
             }
         }
@@ -58,7 +58,7 @@ class UserService {
         }
         return UserModel(
             id = row[UsersTable.id],
-            email = row[UsersTable.email],
+            login = row[UsersTable.email],
             password = row[UsersTable.password],
             salt = row[UsersTable.salt]
         )

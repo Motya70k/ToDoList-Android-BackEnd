@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserModel(
     val id: Int,
-    val email: String,
+    val login: String,
     val password: String,
     val salt: String
 ) : Principal

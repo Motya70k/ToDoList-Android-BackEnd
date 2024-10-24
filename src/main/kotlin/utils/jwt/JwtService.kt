@@ -14,7 +14,7 @@ object JwtService {
     fun generateToken(user: UserModel): String {
         return JWT.create()
             .withIssuer(ISSUER)
-            .withClaim("email", user.email)
+            .withClaim("email", user.login)
             .withExpiresAt(LocalDateTime.now().plusDays(1).toInstant(ZoneOffset.UTC))
             .sign(Algorithm.HMAC256(SECRET))
     }

@@ -22,6 +22,8 @@ dependencies {
     //Ktor server
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-server-http-redirect:$ktor_version")
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
     //Serialization
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")

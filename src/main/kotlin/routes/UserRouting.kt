@@ -23,7 +23,7 @@ fun Route.userRouting(userService: UserService) {
                 if (checkUserExist(userService, userRequest.id!!)) {
                     val user = UserModel(
                         id = userRequest.id,
-                        email = userRequest.email,
+                        login = userRequest.login,
                         password = userRequest.password,
                         salt = userRequest.salt
                     )

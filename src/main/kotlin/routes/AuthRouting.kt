@@ -8,6 +8,7 @@ import io.ktor.server.routing.*
 import ru.shvetsov.todoList.models.UserModel
 import ru.shvetsov.todoList.requests.LoginRequest
 import ru.shvetsov.todoList.requests.UserRequest
+import ru.shvetsov.todoList.response.BaseResponse
 import ru.shvetsov.todoList.services.UserService
 import ru.shvetsov.todoList.utils.jwt.JwtService
 import ru.shvetsov.todoList.utils.security.PasswordEncryptor.verifyPassword
@@ -24,13 +25,13 @@ fun Route.authRouting(
         try {
             val user = UserModel(
                 id = 0,
-                email = userRequest.email,
+                login = userRequest.login,
                 password = userRequest.password,
                 salt = ""
             )
-            if (user.email.isNotBlank() && user.password.isNotBlank()) {
+            if (user.login.isNotBlank() && user.password.isNotBlank()) {
                 userService.addUser(user = user)
-                call.respond(HttpStatusCode.OK)
+                call.respond(HttpStatusCode.OK, BaseResponse(true, "Successful"))
             }
 
         } catch (e: Exception) {
@@ -47,7 +48,7 @@ fun Route.authRouting(
         try {
             val user = userService.getUserByEmail(loginRequest.email)
             if (user == null) {
-                call.respond(HttpStatusCode.NotFound)
+                call.respond(HttpStatusCode.NotFound, "aaaaaboba")
             }
             if (verifyPassword(loginRequest.password, user?.salt!!, user.password)) {
                 call.respond(JwtService.generateToken(user))
