@@ -48,7 +48,7 @@ fun Route.authRouting(
         try {
             val user = userService.getUserByEmail(loginRequest.email)
             if (user == null) {
-                call.respond(HttpStatusCode.NotFound, "aaaaaboba")
+                call.respond(HttpStatusCode.NotFound, BaseResponse(false, "User not found"))
             }
             if (verifyPassword(loginRequest.password, user?.salt!!, user.password)) {
                 call.respond(JwtService.generateToken(user))
